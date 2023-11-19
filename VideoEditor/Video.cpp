@@ -26,13 +26,11 @@ void Video::readFrame()
 
 cv::Mat Video::getFrame()
 {
-	return originalFrame;
+	return this->originalFrame;
 }
 
 cv::Mat Video::getOutFrame()
 {
-	capSrc >> this->originalFrame;
-	this->applyFilter();
 	return this->outFrame;
 }
 

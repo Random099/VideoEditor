@@ -5,12 +5,11 @@ using namespace cv;
 int main(int argc, char* argv[])
 {   
     VideoEditor editor;
-    Video* video1 = new Video(0);
-    editor.appendVideo(video1);
-    video1->addParameter(new Parameter(PType::blur, Size(17, 17)));
+    editor.appendVideo(new Video(0));
+    editor.getVideo(0)->addParameter(new Parameter(PType::blur, Size(17, 17)));
     for(;;){
         imshow("Video Editor", editor.getVideo(0)->getOutFrame());
-        if (waitKey(1000.0 / video1->getFPS()) >= 0) break;
+        if (waitKey(1000.0 / editor.getVideo(0)->getFPS()) >= 0) break;
     }
 
     /*
