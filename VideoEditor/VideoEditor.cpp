@@ -10,12 +10,12 @@ VideoEditor::~VideoEditor()
 	cv::destroyWindow("Video Editor");
 }
 
-void VideoEditor::appendVideo(Video* video)
+void VideoEditor::appendVideo(Video video)
 {
 	this->videos.push_back(video);
 }
 
-Video* VideoEditor::getVideo(int videoIdx) const
+Video& VideoEditor::getVideo(int videoIdx)
 {
 	return this->videos[videoIdx];
 }

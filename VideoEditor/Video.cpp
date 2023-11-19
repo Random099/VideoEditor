@@ -31,6 +31,7 @@ cv::Mat Video::getFrame()
 
 cv::Mat Video::getOutFrame()
 {
+	this->applyFilter();
 	return this->outFrame;
 }
 
@@ -41,10 +42,10 @@ int Video::getFPS() const
 
 void Video::applyFilter() {
 	this->readFrame();
-	for(Parameter& param : this->parameters){
-		switch (param.getType()) {
+	for(auto const& [type, param] : this->parameters) {
+		switch (type) {
 			case PType::blur:
-				cv::blur(this->originalFrame, this->outFrame, param.getSize());
+				cv::blur(this->originalFrame, this->outFrame, param->getSize());
 				break;
 		}
 	}
@@ -52,5 +53,5 @@ void Video::applyFilter() {
 
 void Video::addParameter(Parameter* param)
 {
-	this->parameters.push_back(*param);
+	this->parameters.try_emplace(param->getType(), param);
 }

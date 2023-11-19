@@ -12,8 +12,8 @@ class VideoEditor
 public:
 	VideoEditor();
 	~VideoEditor();
-	void appendVideo(Video*);
-	Video* getVideo(int) const;
+	void appendVideo(Video);
+	Video& getVideo(int);
 private:
-	std::vector<Video*> videos;
+	std::vector<Video> videos;
 };

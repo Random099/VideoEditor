@@ -6,6 +6,8 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <map>
+#include <memory>
 #include "Parameter.h"
 
 class Video
@@ -25,7 +27,7 @@ private:
 	int FPS;
 	cv::Mat originalFrame;
 	cv::Mat outFrame;
-	std::vector<Parameter> parameters;
+	std::map<PType, Parameter*> parameters;
 };
 
 class VideoInitException : public std::runtime_error {
