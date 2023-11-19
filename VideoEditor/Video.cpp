@@ -2,56 +2,66 @@
 
 Video::Video(int device)
 {
-	capSrc.open(device);
-	if (!capSrc.isOpened()) 
+	this->capSrc_.open(device);
+	if (!this->capSrc_.isOpened()) 
 		throw VideoInitException();
-	FPS = capSrc.get(cv::CAP_PROP_FPS);
+	FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
+	this->addParameter(std::shared_ptr<Parameter>(new Parameter{ }));
 }
 
 Video::Video(const std::string& srcName)
 {
-	capSrc.open(srcName);
-	FPS = capSrc.get(cv::CAP_PROP_FPS);
+	this->capSrc_.open(srcName);
+	if (!this->capSrc_.isOpened())
+		throw VideoInitException();
+	this->FPS_ = capSrc_.get(cv::CAP_PROP_FPS);
+	this->addParameter(std::shared_ptr<Parameter>(new Parameter{ }));
 }
 
 Video::~Video()
 {
-	capSrc.~VideoCapture();
+	this->capSrc_.~VideoCapture();
 }
 
-void Video::readFrame()
+inline void Video::readFrame()
 {
-	capSrc >> this->originalFrame;
+	this->capSrc_ >> this->originalFrame_;
 }
 
 cv::Mat Video::getFrame()
 {
-	return this->originalFrame;
+	return this->originalFrame_;
 }
 
 cv::Mat Video::getOutFrame()
 {
+	this->readFrame();
 	this->applyFilter();
-	return this->outFrame;
+	return this->outFrame_;
 }
 
 int Video::getFPS() const
 {
-	return FPS;
+	return FPS_;
 }
 
 void Video::applyFilter() {
-	this->readFrame();
-	for(auto const& [type, param] : this->parameters) {
+	for(auto const& [type, param] : this->parameters_) {
 		switch (type) {
+			case PType::none:
+				this->originalFrame_.copyTo(this->outFrame_);
+				break;
 			case PType::blur:
-				cv::blur(this->originalFrame, this->outFrame, param->getSize());
+				cv::blur(this->originalFrame_, this->outFrame_, param->getSize());
+				break;
+			default:
 				break;
 		}
 	}
 }
 
-void Video::addParameter(Parameter* param)
+void Video::addParameter(std::shared_ptr<Parameter> param)
 {
-	this->parameters.try_emplace(param->getType(), param);
+	std::map<PType, std::shared_ptr<Parameter>>::size_type none = this->parameters_.erase(PType::none);
+	this->parameters_.try_emplace(param->getType(), param);
 }

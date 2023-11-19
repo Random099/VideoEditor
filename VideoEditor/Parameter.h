@@ -3,12 +3,14 @@
 #include <string>
 
 enum class PType {
-	blur = 0
+	none = 0,
+	blur = 1
 };
 
 class Parameter
 {
 public:
+	Parameter();
 	Parameter(PType, cv::Size);
 	~Parameter();
 	PType getType() const;

@@ -5,11 +5,14 @@ using namespace cv;
 int main(int argc, char* argv[])
 {   
     VideoEditor editor;
-    editor.appendVideo(Video{ 0 });
-    editor.getVideo(0).addParameter(new Parameter{ PType::blur, Size(17, 17) });
+    editor.addVideo("First", std::shared_ptr<Video>(new Video{ 0 }));
+    editor.addVideo("Second", std::shared_ptr<Video>(new Video{ "doanel.mp4" }));
+    editor.getVideo("First")->addParameter(std::shared_ptr<Parameter>(new Parameter{PType::blur, Size(17, 17)}));
     for(;;){
-        imshow("Video Editor", editor.getVideo(0).getOutFrame());
-        if (waitKey(1000.0 / editor.getVideo(0).getFPS()) >= 0) break;
+        imshow("First", editor.getVideo("First")->getOutFrame());
+        imshow("Second", editor.getVideo("Second")->getOutFrame());
+        //waitKey(0);
+        if (waitKey(1000.0 / editor.getVideo("First")->getFPS()) >= 0) break;
     }
 
     /*

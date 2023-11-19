@@ -2,20 +2,21 @@
 
 VideoEditor::VideoEditor()
 {
-	cv::namedWindow("Video Editor", cv::WINDOW_AUTOSIZE);
+	//cv::namedWindow("Video Editor", cv::WINDOW_AUTOSIZE);
 }
 
 VideoEditor::~VideoEditor()
 {
-	cv::destroyWindow("Video Editor");
+	//cv::destroyWindow("Video Editor");
 }
 
-void VideoEditor::appendVideo(Video video)
+void VideoEditor::addVideo(const std::string name, std::shared_ptr<Video> video)
 {
-	this->videos.push_back(video);
+	cv::namedWindow(name, cv::WINDOW_AUTOSIZE);
+	this->windows_.try_emplace(name, video);
 }
 
-Video& VideoEditor::getVideo(int videoIdx)
+std::shared_ptr<Video> VideoEditor::getVideo(const std::string name)
 {
-	return this->videos[videoIdx];
+	return this->windows_.find(name)->second;
 }

@@ -16,18 +16,18 @@ public:
 	Video(int);
 	Video(const std::string&);
 	~Video();
-	void readFrame();
+	inline void readFrame();
 	cv::Mat getFrame();
 	cv::Mat getOutFrame();
 	int getFPS() const;
 	void applyFilter();
-	void addParameter(Parameter*);
+	void addParameter(std::shared_ptr<Parameter>);
 private:
-	cv::VideoCapture capSrc;
-	int FPS;
-	cv::Mat originalFrame;
-	cv::Mat outFrame;
-	std::map<PType, Parameter*> parameters;
+	cv::VideoCapture capSrc_;
+	int FPS_;
+	cv::Mat originalFrame_;
+	cv::Mat outFrame_;
+	std::map<PType, std::shared_ptr<Parameter>> parameters_;
 };
 
 class VideoInitException : public std::runtime_error {

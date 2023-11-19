@@ -5,6 +5,8 @@
 #include <opencv2/imgproc.hpp>
 #include <vector>
 #include <memory>
+#include <utility>
+#include <map>
 #include "Video.h"
 
 class VideoEditor
@@ -12,8 +14,9 @@ class VideoEditor
 public:
 	VideoEditor();
 	~VideoEditor();
-	void appendVideo(Video);
-	Video& getVideo(int);
+	void addVideo(const std::string, std::shared_ptr<Video>);
+	std::shared_ptr<Video> getVideo(const std::string);
 private:
-	std::vector<Video> videos;
+	std::map<std::string, std::shared_ptr<Video>> windows_;
+	//std::vector<Video> videos_;
 };
