@@ -9,6 +9,8 @@ int main(int argc, char* argv[])
     editor.addWindow("Second", "doanel.mp4");
     editor.removeWindow("First");
     editor.removeWindow("Second");
+    editor.addWindow("First", 0);
+    editor.removeWindow("First");
     //editor.getVideo("First")->addParameter(std::shared_ptr<Parameter>(new Parameter{PType::blur, Size(17, 17)}));
     
     /*

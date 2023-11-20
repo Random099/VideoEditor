@@ -35,6 +35,7 @@ void VideoEditor::displayVideo(const std::string& name, int source)
 		cv::imshow(name, vPtr->getOutFrame());
 		if (cv::waitKey(1000.0 / vPtr->getFPS()) == 27) break;
 	}
+	cv::destroyWindow(name);
 }
 
 void VideoEditor::displayVideo(const std::string& name, const std::string& source)
@@ -45,10 +46,13 @@ void VideoEditor::displayVideo(const std::string& name, const std::string& sourc
 		cv::imshow(name, vPtr->getOutFrame());
 		if (cv::waitKey(1000.0 / vPtr->getFPS()) == 27) break;
 	}
+	cv::destroyWindow(name);
 }
 
 void VideoEditor::removeWindow(const std::string& name)
 {
 	this->windows_.find(name)->second->join();
-	this->windows_.erase(name);
+	std::map<std::string, std::shared_ptr<std::thread>>::size_type erased = this->windows_.erase(name);
+	//std::cout << erased << '\n';
+	//this->windows_.erase(name);
 }
