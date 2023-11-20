@@ -13,10 +13,10 @@ public:
 	Parameter();
 	Parameter(PType, cv::Size);
 	~Parameter();
-	PType getType() const;
-	cv::Size getSize() const;
-	void increaseSize(int);
-	void decreaseSize(int);
+	PType typeGet() const;
+	cv::Size sizeGet() const;
+	void sizeIncrease(int);
+	void sizeDecrease(int);
 private:
 	PType type_;
 	cv::Size size_;

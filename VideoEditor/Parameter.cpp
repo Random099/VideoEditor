@@ -8,24 +8,25 @@ Parameter::~Parameter()
 {
 }
 
-PType Parameter::getType() const
+PType Parameter::typeGet() const
 {
 	return this->type_;
 }
 
-void Parameter::increaseSize(int step)
+void Parameter::sizeIncrease(int step)
 {
 	this->size_.width += step;
 	this->size_.height += step;
 }
 
-void Parameter::decreaseSize(int step)
+void Parameter::sizeDecrease(int step)
 {
 	this->size_.width -= step;
 	this->size_.height -= step;
 }
 
-cv::Size Parameter::getSize() const
+cv::Size Parameter::sizeGet() const
 {
 	return this->size_;
 }
+
