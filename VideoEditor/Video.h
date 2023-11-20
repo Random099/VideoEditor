@@ -16,12 +16,12 @@ public:
 	Video(int);
 	Video(const std::string&);
 	~Video();
-	inline void readFrame();
-	cv::Mat getFrame();
-	cv::Mat getOutFrame();
-	double getFPS() const;
-	void applyFilter();
-	void addParameter(std::shared_ptr<Parameter>);
+	inline void frameRead();
+	std::shared_ptr<cv::Mat> originalFrameGet();
+	std::shared_ptr<cv::Mat> outFrameGet();
+	double fpsGet() const;
+	void filterApply();
+	void parameterCreate(std::shared_ptr<Parameter>);
 private:
 	cv::VideoCapture capSrc_;
 	double FPS_;
@@ -32,5 +32,10 @@ private:
 
 class VideoInitException : public std::runtime_error {
 public:
-	VideoInitException() : std::runtime_error("Capture creation error") { }
+	VideoInitException() : std::runtime_error("Capture creation error.") { }
+};
+
+class FrameReadException : public std::runtime_error {
+public:
+	FrameReadException() : std::runtime_error("Frame read error.") { }
 };

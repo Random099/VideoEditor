@@ -5,12 +5,35 @@ using namespace cv;
 int main(int argc, char* argv[])
 {   
     VideoEditor editor;
-    editor.addWindow("First", 0);
-    editor.addWindow("Second", "doanel.mp4");
-    editor.removeWindow("First");
-    editor.removeWindow("Second");
-    editor.addWindow("First", 0);
-    editor.removeWindow("First");
+    
+    //editor.controlPanelCreate(ControlPanel::defaultName);
+    editor.windowCreate("First", 0);
+    editor.windowCreate("Second", "doanel.mp4");
+    for (;;);
+    editor.windowDestroy("First");
+    editor.windowDestroy("Second");
+    //editor.controlPanelDestroy(ControlPanel::defaultName);
+
+    /*
+    char c;
+    for(;;){
+        std::cin >> c;
+        if (c == 'c') {
+            editor.controlPanelCreate(ControlPanel::defaultName);
+        }
+        if (c == 'w') {
+			editor.windowCreate("First", 0);
+		}
+        if (c == 'y') {
+            editor.controlPanelDestroy(ControlPanel::defaultName);
+        }
+        if (c == 'x') {
+            editor.windowDestroy("First");
+        }
+    }
+    */
+    //editor.windowDestroy("First");
+    //editor.controlPanelDestroy(ControlPanel::defaultName);
     //editor.getVideo("First")->addParameter(std::shared_ptr<Parameter>(new Parameter{PType::blur, Size(17, 17)}));
     
     /*
