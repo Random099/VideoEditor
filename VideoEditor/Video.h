@@ -19,12 +19,12 @@ public:
 	inline void readFrame();
 	cv::Mat getFrame();
 	cv::Mat getOutFrame();
-	int getFPS() const;
+	double getFPS() const;
 	void applyFilter();
 	void addParameter(std::shared_ptr<Parameter>);
 private:
 	cv::VideoCapture capSrc_;
-	int FPS_;
+	double FPS_;
 	cv::Mat originalFrame_;
 	cv::Mat outFrame_;
 	std::map<PType, std::shared_ptr<Parameter>> parameters_;

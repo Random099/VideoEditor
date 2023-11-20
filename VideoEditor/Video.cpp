@@ -40,12 +40,13 @@ cv::Mat Video::getOutFrame()
 	return this->outFrame_;
 }
 
-int Video::getFPS() const
+double Video::getFPS() const
 {
 	return FPS_;
 }
 
-void Video::applyFilter() {
+void Video::applyFilter() 
+{
 	for(auto const& [type, param] : this->parameters_) {
 		switch (type) {
 			case PType::none:

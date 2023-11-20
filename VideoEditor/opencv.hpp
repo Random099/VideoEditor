@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <thread>
+#include "VideoEditor.h"
 
 namespace constants {
 	constexpr double ALPHA = 0.9;

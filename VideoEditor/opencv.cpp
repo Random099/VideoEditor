@@ -1,20 +1,24 @@
 #include "opencv.hpp"
-#include "VideoEditor.h"
 
 using namespace cv;
+
 int main(int argc, char* argv[])
 {   
     VideoEditor editor;
-    editor.addVideo("First", std::shared_ptr<Video>(new Video{ 0 }));
-    editor.addVideo("Second", std::shared_ptr<Video>(new Video{ "doanel.mp4" }));
-    editor.getVideo("First")->addParameter(std::shared_ptr<Parameter>(new Parameter{PType::blur, Size(17, 17)}));
+    editor.addWindow("First", 0);
+    editor.addWindow("Second", "doanel.mp4");
+    editor.removeWindow("First");
+    editor.removeWindow("Second");
+    //editor.getVideo("First")->addParameter(std::shared_ptr<Parameter>(new Parameter{PType::blur, Size(17, 17)}));
+    
+    /*
     for(;;){
         imshow("First", editor.getVideo("First")->getOutFrame());
         imshow("Second", editor.getVideo("Second")->getOutFrame());
         //waitKey(0);
         if (waitKey(1000.0 / editor.getVideo("First")->getFPS()) >= 0) break;
     }
-
+    */
     /*
     VideoCapture cap(0);
     const double FPS = cap.get(CAP_PROP_FPS);
