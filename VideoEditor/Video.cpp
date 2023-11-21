@@ -1,6 +1,6 @@
 #include "Video.h"
 
-Video::Video(int device)
+Video::Video(int device) //todo: frame read multithreading
 {
 	this->capSrc_.open(device);
 	if (!this->capSrc_.isOpened()) 
@@ -30,12 +30,12 @@ inline void Video::frameRead()
 	this->capSrc_ >> this->originalFrame_;		
 }
 
-std::shared_ptr<cv::Mat> Video::originalFrameGet()
+std::shared_ptr<cv::Mat> Video::originalFrameGet() 
 {
 	return std::make_shared<cv::Mat>(this->originalFrame_);
 }
 
-std::shared_ptr<cv::Mat> Video::outFrameGet()
+std::shared_ptr<cv::Mat> Video::outFrameGet() 
 {
 	this->frameRead();
 	this->filterApply();

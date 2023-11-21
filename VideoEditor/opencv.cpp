@@ -6,12 +6,12 @@ int main(int argc, char* argv[])
 {   
     VideoEditor editor;
     
-    editor.windowCreate("First", 0);
+    editor.videoWindowCreate("First", 0);
     editor.controlPanelCreate(ControlPanel::defaultName);
-    editor.windowCreate("Second", "doanel.mp4");
+    editor.videoWindowCreate("Second", "doanel.mp4");
     for (;;);
-    editor.windowDestroy("First");
-    editor.windowDestroy("Second");
+    editor.videoWindowDestroy("First");
+    editor.videoWindowDestroy("Second");
     editor.controlPanelDestroy(ControlPanel::defaultName);
 
     /*
