@@ -21,7 +21,7 @@ void ControlPanel::run(const std::string& name) {
 	int max = 100;
 	for (;;) {
 		//cv::imshow(cpName, ControlPanel::imgBackground);
-		int command = cv::waitKey(0);
+		int command = cv::waitKey(200);
 		if (command == 98)
 		{
 			cv::createTrackbar("blur", name, nullptr, max, test, &testData);

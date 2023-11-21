@@ -5,9 +5,12 @@ Video::Video(int device) //todo: frame read multithreading
 	this->capSrc_.open(device);
 	if (!this->capSrc_.isOpened()) 
 		throw VideoInitException();
-	FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
+	this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
+	this->frameCount = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
 	std::cout << device << '\t' << FPS_ << '\n';
 	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+	this->framesRead_ = std::unique_ptr<ConcurrentQueue<cv::Mat>>(new ConcurrentQueue<cv::Mat>);
+	this->frameReader_ = std::thread([this] { this->frameRead(); });
 }
 
 Video::Video(const std::string& srcName)
@@ -18,6 +21,7 @@ Video::Video(const std::string& srcName)
 	this->FPS_ = capSrc_.get(cv::CAP_PROP_FPS);
 	std::cout << srcName << '\t' << FPS_ << '\n';
 	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+	this->frameReader_ = std::thread([this] { this->frameRead(); });
 }
 
 Video::~Video()
@@ -27,19 +31,18 @@ Video::~Video()
 
 inline void Video::frameRead()
 {
-	this->capSrc_ >> this->originalFrame_;		
-}
-
-std::shared_ptr<cv::Mat> Video::originalFrameGet() 
-{
-	return std::make_shared<cv::Mat>(this->originalFrame_);
+	cv::Mat frameIn;
+	for (;; --(this->frameCount)) {
+		this->capSrc_ >> frameIn;
+		this->framesRead_->push(frameIn);
+	}
 }
 
 std::shared_ptr<cv::Mat> Video::outFrameGet() 
 {
-	this->frameRead();
+	//this->frameRead();
 	this->filterApply();
-	return std::make_shared<cv::Mat>(this->outFrame_);
+	return std::make_shared<cv::Mat>(this->frameOut_);
 }
 
 double Video::fpsGet() const
@@ -49,13 +52,15 @@ double Video::fpsGet() const
 
 void Video::filterApply() 
 {
+	cv::Mat frameIn;
+	this->framesRead_->wait_and_pop(frameIn);
 	for(auto const& [type, param] : this->parameters_) {
 		switch (type) {
 			case PType::none:
-				this->originalFrame_.copyTo(this->outFrame_);
+				frameIn.copyTo(this->frameOut_);
 				break;
 			case PType::blur:
-				cv::blur(this->originalFrame_, this->outFrame_, param->sizeGet());
+				cv::blur(frameIn, this->frameOut_, param->sizeGet());
 				break;
 			default:
 				break;

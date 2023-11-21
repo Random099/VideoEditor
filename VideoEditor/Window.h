@@ -13,4 +13,5 @@ private:
 	void run(const std::string&, const std::string&);
 	void run(const std::string&, int);
 	std::thread thread_;
+	std::shared_ptr<Video> vPtr_ = nullptr;
 };

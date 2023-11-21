@@ -11,7 +11,7 @@
 #include "Window.h"
 #include "ControlPanel.h"
 
-class VideoEditor //todo: implement window class
+class VideoEditor
 {
 public:
 	//void test(int, void*);
@@ -25,14 +25,6 @@ public:
 	void controlPanelDestroy(const std::string&);
 	std::shared_ptr<WindowVideo> operator[](const std::string&);
 private:
-	//std::map<std::string, std::shared_ptr<std::thread>> windows_;
 	std::map<std::string, std::shared_ptr<ControlPanel>> controlPanels_;
 	std::map<std::string, std::shared_ptr<WindowVideo>> videoWindows_;
-	//std::vector<Video> videos_;
 };
-
-/*
-
-Control Panel
-
-*/

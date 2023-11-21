@@ -8,7 +8,9 @@
 #include <iostream>
 #include <map>
 #include <memory>
+#include <thread>
 #include "Parameter.h"
+#include "ConcurrentQueue.h"
 
 class Video
 {
@@ -17,16 +19,18 @@ public:
 	Video(const std::string&);
 	~Video();
 	inline void frameRead();
-	std::shared_ptr<cv::Mat> originalFrameGet();
 	std::shared_ptr<cv::Mat> outFrameGet();
 	double fpsGet() const;
 	void filterApply();
 	void parameterCreate(std::shared_ptr<Parameter>);
 private:
+	std::thread frameReader_;
+	std::unique_ptr<ConcurrentQueue<cv::Mat>> framesRead_;
+	int frameCount;
 	cv::VideoCapture capSrc_;
 	double FPS_;
-	cv::Mat originalFrame_;
-	cv::Mat outFrame_;
+	//cv::Mat frameIn_;
+	cv::Mat frameOut_;
 	std::map<PType, std::shared_ptr<Parameter>> parameters_;
 };
 
