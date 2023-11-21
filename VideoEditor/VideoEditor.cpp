@@ -6,6 +6,8 @@ void test(int pos, void* data)
 	std::cout << *(int*)data << '\n';
 }
 
+int testData = 0;
+
 VideoEditor::VideoEditor()
 {
 	testData = 0;
@@ -51,10 +53,11 @@ void VideoEditor::videoDisplay(const std::string& name, int source)
 	std::shared_ptr<cv::Mat> outputFrame;
 	for (;;) {
 		outputFrame = vPtr->outFrameGet();
-		if (!outputFrame->empty()) {
+		if (!outputFrame->empty())
 			cv::imshow(name, *outputFrame);
-		}
-		else {
+		else 
+		{
+			std::cout << name << " display finished.\n";
 			break;
 		}
 		if (cv::waitKey(1000.0 / vPtr->fpsGet()) == 27) break;
@@ -67,16 +70,17 @@ void VideoEditor::videoDisplay(const std::string& name, const std::string& sourc
 	cv::namedWindow(name, cv::WINDOW_NORMAL);
 	std::shared_ptr<Video> vPtr(new Video{ source });
 	std::shared_ptr<cv::Mat> outputFrame;
-	for (;;) {
+	for (;;) 
+	{
 		outputFrame = vPtr->outFrameGet();
-		if (!outputFrame->empty()) {
+		if (!outputFrame->empty())
 			cv::imshow(name, *outputFrame);
-		}
-		else {
+		else 
+		{
 			std::cout << name << " display finished.\n";
 			break;
 		}
-		if (cv::waitKey( (1000.0 / vPtr->fpsGet()) / 2) == 27) break;
+		if (cv::waitKey(1000.0 / vPtr->fpsGet()) == 27) break;
 	}
 	cv::destroyWindow(name);
 }
@@ -97,15 +101,14 @@ void VideoEditor::controlPanelDestroy(const std::string& cpName)
 
 void VideoEditor::controlPanelRun(const std::string& cpName) {
 	cv::namedWindow(cpName, cv::WINDOW_NORMAL);
-	ControlPanel controlPanel{ cpName };
+	std::shared_ptr<ControlPanel> cpPtr(new ControlPanel{ cpName });
 	for (;;) {
 		//cv::imshow(cpName, ControlPanel::imgBackground);
-		if (cv::waitKey(0) == 98) {
-			controlPanel.trackbarCreate("blur", test, &this->testData, controlPanel.posGet(), controlPanel.maxGet());
-		}
-		else {
+		int command = cv::waitKey(0);
+		if (command == 98) 
+			cpPtr->trackbarCreate("blur", test, &testData, cpPtr->posGet(), cpPtr->maxGet());
+		else if (command != 98)
 			break;
-		}
 	}
 	cv::destroyWindow(cpName);
 }

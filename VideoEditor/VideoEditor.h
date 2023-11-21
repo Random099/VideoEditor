@@ -31,7 +31,6 @@ private:
 class VideoEditor
 {
 public:
-	int testData;
 	//void test(int, void*);
 	VideoEditor();
 	~VideoEditor();

@@ -2,7 +2,7 @@
 
 Parameter::Parameter() : type_(PType::none) {}
 
-Parameter::Parameter(PType type, cv::Size size) : type_(type), size_(size) {}
+Parameter::Parameter(PType type, cv::Size size) : type_{ type }, size_{ size } {}
 
 Parameter::~Parameter()
 {

@@ -6,7 +6,7 @@ Video::Video(int device)
 	if (!this->capSrc_.isOpened()) 
 		throw VideoInitException();
 	FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
-	std::cout << device << FPS_ << '\n';
+	std::cout << device << '\t' << FPS_ << '\n';
 	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
 }
 
@@ -16,7 +16,7 @@ Video::Video(const std::string& srcName)
 	if (!this->capSrc_.isOpened())
 		throw VideoInitException();
 	this->FPS_ = capSrc_.get(cv::CAP_PROP_FPS);
-	std::cout << srcName << FPS_ << '\n';
+	std::cout << srcName << '\t' << FPS_ << '\n';
 	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
 }
 
