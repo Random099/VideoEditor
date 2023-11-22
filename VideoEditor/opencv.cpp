@@ -7,12 +7,12 @@ int main(int argc, char* argv[])
     VideoEditor editor;
     
     editor.videoWindowCreate("First", 0);
-    editor.controlPanelCreate(ControlPanel::defaultName);
+    //editor.controlPanelCreate(ControlPanel::defaultName);
     editor.videoWindowCreate("Second", "doanel.mp4");
     for (;;);
     editor.videoWindowDestroy("First");
     editor.videoWindowDestroy("Second");
-    editor.controlPanelDestroy(ControlPanel::defaultName);
+    //editor.controlPanelDestroy(ControlPanel::defaultName);
 
     /*
     char c;

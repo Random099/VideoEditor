@@ -1,7 +1,10 @@
 #include "ConcurrentQueue.h"
 
 template <typename T>
-ConcurrentQueue<T>::ConcurrentQueue() {}
+ConcurrentQueue<T>::ConcurrentQueue()
+{
+    // empty
+}
 
 template <typename T>
 void ConcurrentQueue<T>::push(T const& data)

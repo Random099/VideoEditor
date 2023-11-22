@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "WindowVideo.h"
 
 
 WindowVideo::WindowVideo(const std::string& name, const std::string& source)
@@ -28,7 +28,7 @@ void WindowVideo::run(const std::string& name, const std::string& source)
 			std::cout << name << " display finished.\n";
 			break;
 		}
-		if (cv::waitKey(1000.0 / this->vPtr_->fpsGet()) == 27) break;
+		if (cv::waitKey( int(1000.0 / this->vPtr_->fpsGet()) ) == 27) break;
 	}
 	cv::destroyWindow(name);
 }
@@ -48,7 +48,7 @@ void WindowVideo::run(const std::string& name, int source)
 			std::cout << name << " display finished.\n";
 			break;
 		}
-		if (cv::waitKey(1000.0 / this->vPtr_->fpsGet()) == 27) break;
+		if (cv::waitKey( int(1000.0 / this->vPtr_->fpsGet()) ) == 27) break;
 	}
 	cv::destroyWindow(name);
 }

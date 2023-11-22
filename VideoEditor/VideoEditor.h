@@ -8,8 +8,8 @@
 #include <utility>
 #include <map>
 #include "Video.h"
-#include "Window.h"
 #include "ControlPanel.h"
+#include "WindowVideo.h"
 
 class VideoEditor
 {

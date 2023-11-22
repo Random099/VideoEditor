@@ -26,7 +26,7 @@ public:
 private:
 	std::thread frameReader_;
 	std::unique_ptr<ConcurrentQueue<cv::Mat>> framesRead_;
-	int frameCount;
+	int frameCount_;
 	cv::VideoCapture capSrc_;
 	double FPS_;
 	//cv::Mat frameIn_;

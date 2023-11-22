@@ -14,7 +14,9 @@ public:
     bool try_pop(T& valPopped);
     void wait_and_pop(T& valPopped);
 private:
-	std::mutex mut;
-	std::condition_variable cond;
-	std::queue<T> queue;
+    std::mutex mut;
+    std::condition_variable cond;
+    std::queue<T> queue;
 };
+
+#include "ConcurrentQueue.inl"

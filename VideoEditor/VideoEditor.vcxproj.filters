@@ -27,13 +27,13 @@
     <ClInclude Include="VideoEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ControlPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConcurrentQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowVideo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -50,14 +50,16 @@
     <ClCompile Include="VideoEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ControlPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConcurrentQueue.cpp">
+    <ClCompile Include="WindowVideo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ConcurrentQueue.inl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
