@@ -7,12 +7,7 @@ Video::Video(int device) //todo: frame read multithreading
 		throw VideoInitException();
 	this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
 	this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
-	std::cout << device << '\t' << FPS_ << '\n';
-	int x = this->frameCount_;
-	std::cout << device << " frame count: " <<  x << '\n';
 	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
-	this->framesRead_ = std::unique_ptr<ConcurrentQueue<cv::Mat>>(new ConcurrentQueue<cv::Mat>);
-	this->frameReader_ = std::thread([this] { this->frameRead(); });
 }
 
 Video::Video(const std::string& srcName)
@@ -22,12 +17,7 @@ Video::Video(const std::string& srcName)
 		throw VideoInitException();
 	this->FPS_ = capSrc_.get(cv::CAP_PROP_FPS);
 	this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
-	std::cout << srcName << '\t' << FPS_ << '\n';
-	int x = this->frameCount_;
-	std::cout << srcName << " frame count:" << x << '\n';
 	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
-	this->framesRead_ = std::unique_ptr<ConcurrentQueue<cv::Mat>>(new ConcurrentQueue<cv::Mat>);
-	this->frameReader_ = std::thread([this] { this->frameRead(); });
 }
 
 Video::~Video()
@@ -35,20 +25,22 @@ Video::~Video()
 	this->capSrc_.release();
 }
 
-void Video::frameRead()
+bool Video::frameRead()
 {
-	cv::Mat frameIn;
-	while(--(this->frameCount_)) {
-		this->capSrc_ >> frameIn;
-		this->framesRead_->push(frameIn);
+	this->capSrc_ >> this->frameIn_;
+	if (this->frameIn_.empty()) {
+		this->frameEmptyFlag_ = true;
+		this->frameOut_.copyTo(this->frameLast_);
+		return false;
 	}
+	return true;
 }
 
-std::shared_ptr<cv::Mat> Video::outFrameGet() 
+cv::Mat Video::outFrameGet() 
 {
 	//this->frameRead();
 	this->filterApply();
-	return std::make_shared<cv::Mat>(this->frameOut_);
+	return this->frameOut_;
 }
 
 double Video::fpsGet() const
@@ -58,18 +50,19 @@ double Video::fpsGet() const
 
 void Video::filterApply() 
 {
-	cv::Mat frameIn;
-	this->framesRead_->wait_and_pop(frameIn);
-	for(auto const& [type, param] : this->parameters_) {
-		switch (type) {
+	if (this->frameRead()) {
+		for (auto const& [type, param] : this->parameters_) {
+			switch (type) {
 			case PType::none:
-				frameIn.copyTo(this->frameOut_);
+				this->frameIn_.copyTo(this->frameOut_);
 				break;
 			case PType::blur:
-				cv::blur(frameIn, this->frameOut_, param->sizeGet());
+				cv::blur(this->frameIn_, this->frameOut_, param->sizeGet());
 				break;
 			default:
 				break;
+			}
+			cv::cvtColor(this->frameOut_, this->frameOut_, cv::COLOR_BGR2RGBA);
 		}
 	}
 }
@@ -78,4 +71,19 @@ void Video::parameterCreate(std::shared_ptr<Parameter> param)
 {
 	std::map<PType, std::shared_ptr<Parameter>>::size_type none = this->parameters_.erase(PType::none);
 	this->parameters_.try_emplace(param->typeGet(), param);
+}
+
+int Video::frameCountGet() const
+{
+	return this->frameCount_;
+}
+
+bool Video::frameEmptyFlag()
+{
+	return this->frameEmptyFlag_;
+}
+
+cv::Mat Video::frameLastGet()
+{
+	return this->frameLast_;
 }

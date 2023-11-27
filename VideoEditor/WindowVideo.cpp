@@ -1,54 +1,61 @@
 #include "WindowVideo.h"
 
 
-WindowVideo::WindowVideo(const std::string& name, const std::string& source)
+WindowVideo::WindowVideo(const std::string& name, const std::string& source) : isSourceCam_(false), video_(source), name_(name)
 {
-	this->thread_ = std::thread([this, name, source]{ this->run(name, source); });
-	this->thread_.detach();
+	this->videoFrameCount_ = this->video_.frameCountGet();
+	this->frameReader_ = std::thread([this] { this->readFrames(); });
+	this->frameReader_.detach();
 }
 
-WindowVideo::WindowVideo(const std::string& name, int source)
+WindowVideo::WindowVideo(const std::string& name, const int source) : isSourceCam_(true), video_(source), name_(name)
 {
-	this->thread_ = std::thread([this, name, source] { this->run(name, source); });
-	this->thread_.detach();
+	this->videoFrameCount_ = this->video_.frameCountGet();
+	this->frameReader_ = std::thread([this] { this->readFrames(); });
+	this->frameReader_.detach();
 }
 
-void WindowVideo::run(const std::string& name, const std::string& source)
+void WindowVideo::readFrames() 
 {
-	cv::namedWindow(name, cv::WINDOW_NORMAL);
-	this->vPtr_ = std::make_shared<Video>(source);
-	std::shared_ptr<cv::Mat> outputFrame;
-	for (;;)
+	if (!this->isSourceCam_) 
 	{
-		outputFrame = this->vPtr_->outFrameGet();
-		if (!outputFrame->empty())
-			cv::imshow(name, *outputFrame);
-		else
+		while (1)
 		{
-			std::cout << name << " display finished.\n";
-			break;
+			this->framesRead_.push(this->video_.outFrameGet());
+			if (!this->video_.frameEmptyFlag())
+				this->framesRead_.push(this->video_.outFrameGet());
+			else
+				break;
 		}
-		if (cv::waitKey( int(1000.0 / this->vPtr_->fpsGet()) ) == 27) break;
 	}
-	cv::destroyWindow(name);
+	else 
+	{
+		while (1) 
+			this->framesRead_.push(this->video_.outFrameGet());
+	}
 }
 
-void WindowVideo::run(const std::string& name, int source)
+void WindowVideo::run()
 {
-	cv::namedWindow(name, cv::WINDOW_NORMAL);
-	this->vPtr_ = std::make_shared<Video>(source);
-	std::shared_ptr<cv::Mat> outputFrame;
-	for (;;)
+	if (this->currentFrameId_ < this->videoFrameCount_)
 	{
-		outputFrame = this->vPtr_->outFrameGet();
-		if (!outputFrame->empty())
-			cv::imshow(name, *outputFrame);
-		else
-		{
-			std::cout << name << " display finished.\n";
-			break;
-		}
-		if (cv::waitKey( int(1000.0 / this->vPtr_->fpsGet()) ) == 27) break;
+		this->framesRead_.wait_and_pop(this->frame_);
+		++this->currentFrameId_;
 	}
-	cv::destroyWindow(name);
+	else if(this->isSourceCam_)
+		this->framesRead_.wait_and_pop(this->frame_);
+	else
+		this->video_.frameLastGet().copyTo(this->frame_);
+
+	GLuint texture;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this->frame_.cols, this->frame_.rows, 0, GL_RGBA, GL_UNSIGNED_BYTE, this->frame_.data);
+	
+	ImGui::Begin(this->name_.c_str());
+	ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(texture)), ImVec2(this->frame_.cols, this->frame_.rows));
+	ImGui::End();
 }

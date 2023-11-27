@@ -4,14 +4,22 @@ using namespace cv;
 
 int main(int argc, char* argv[])
 {   
+    //const cv::Mat background = cv::imread("wichu.png");
+    //cv::startWindowThread();
     VideoEditor editor;
-    
-    editor.videoWindowCreate("First", 0);
-    //editor.controlPanelCreate(ControlPanel::defaultName);
-    editor.videoWindowCreate("Second", "doanel.mp4");
-    for (;;);
-    editor.videoWindowDestroy("First");
-    editor.videoWindowDestroy("Second");
+    editor.run();
+    //editor.videoWindowCreate("Third", "spice.mp4");
+    //editor.videoWindowCreate("Fourth", "spice.mp4");
+    //editor.videoWindowCreate("Fifth", "spice.mp4");
+    //editor.videoWindowCreate("Second", "spice.mp4");
+    //editor.videoWindowCreate("First", 0);
+    //editor.videoWindowCreate("This", "spice.mp4");
+    //editor.controlPanelCreate("Control Panel");
+    for (;;) {
+        //cv::waitKey(30);
+    }
+    //editor.videoWindowDestroy("First");
+    //editor.videoWindowDestroy("Second");
     //editor.controlPanelDestroy(ControlPanel::defaultName);
 
     /*

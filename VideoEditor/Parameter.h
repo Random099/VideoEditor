@@ -1,5 +1,7 @@
 #pragma once
+//opencv
 #include <opencv2/core.hpp>
+//std
 #include <string>
 
 enum class PType {

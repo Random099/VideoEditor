@@ -9,11 +9,13 @@
 class ControlPanel
 {
 public:
-	inline static const cv::Mat imgBackground {cv::imread("wichu.png")};
-	inline static const std::string defaultName { "Control Panel" };
+	//inline static const cv::Mat imgBackground {cv::imread("wichu.png")};
+	//inline static const std::string defaultName { "Control Panel" };
 	ControlPanel(const std::string&);
 	//void operator()(const std::string&, const std::string&);
+	const cv::Mat background = cv::imread("wichu.png");
 private:
 	void run(const std::string&);
 	std::thread thread_;
+	cv::VideoCapture background_;
 };

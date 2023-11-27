@@ -9,9 +9,8 @@ ConcurrentQueue<T>::ConcurrentQueue()
 template <typename T>
 void ConcurrentQueue<T>::push(T const& data)
 {
-    std::unique_lock<std::mutex> lock(mut);
+    std::lock_guard<std::mutex> lock(mut);
     queue.push(data);
-    lock.unlock();
     cond.notify_one();
 }
 
@@ -37,8 +36,14 @@ template <typename T>
 void ConcurrentQueue<T>::wait_and_pop(T& valPopped)
 {
     std::unique_lock<std::mutex> lock(mut);
-    while (queue.empty())
-        cond.wait(lock);
+    cond.wait(lock, [this] {return !queue.empty(); });
     valPopped = queue.front();
     queue.pop();
+}
+
+template<typename T>
+std::queue<T>::size_type ConcurrentQueue<T>::size() const
+{
+    std::lock_guard<std::mutex> lock(mut);
+    return this->queue.size();
 }

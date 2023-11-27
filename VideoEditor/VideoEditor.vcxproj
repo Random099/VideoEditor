@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="ControlPanel.h" />
+    <ClInclude Include="extras.h" />
     <ClInclude Include="opencv.hpp" />
     <ClInclude Include="Parameter.h" />
     <ClInclude Include="Video.h" />
@@ -141,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ControlPanel.cpp" />
+    <ClCompile Include="extras.cpp" />
     <ClCompile Include="opencv.cpp" />
     <ClCompile Include="Parameter.cpp" />
     <ClCompile Include="Video.cpp" />
