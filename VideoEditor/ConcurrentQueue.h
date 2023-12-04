@@ -1,6 +1,6 @@
 #pragma once
 
-#include <queue>
+#include <deque>
 #include <mutex>
 #include <condition_variable>
 
@@ -9,15 +9,16 @@ class ConcurrentQueue
 {
 public:
     explicit ConcurrentQueue();
-    void push(T const& data);
+    void pushBack(T const& data);
     bool empty() const;
-    bool try_pop(T& valPopped);
-    void wait_and_pop(T& valPopped);
-    std::queue<T>::size_type size() const;
+    bool tryPopFront(T& valPopped);
+    void waitPopFront(T& valPopped);
+    void waitPopBack(T& valPopped);
+    std::deque<T>::size_type size() const;
 private:
     mutable std::mutex mut;
     std::condition_variable cond;
-    std::queue<T> queue;
+    std::deque<T> queue;
 };
 
 #include "ConcurrentQueue.inl"

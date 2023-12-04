@@ -28,10 +28,8 @@ int VideoEditor::run() {
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	int input = 1;
-	WindowVideo win1("Cam", 0);
-	WindowVideo win2("Vid", "doanel.mp4");
 	for(;;) {
+		auto start = std::chrono::system_clock::now();
 		glfwPollEvents();
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -40,15 +38,44 @@ int VideoEditor::run() {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		win1.run();
-		win2.run();
-		
-		//ImGui::End();
+		ImGui::Begin("Editor");
+
+		handleVideos();
+
+		ImGui::End();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		glfwSwapBuffers(window);
+		auto end = std::chrono::system_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+		std::cout << elapsed << '\n';
+	}
+}
+
+void VideoEditor::handleVideos() {
+	//bool checkBox { false };
+	//std::string textBuffer;
+	ImGui::Checkbox("Open Video", &checkBox_);
+	ImGui::InputText("Text", &textBuffer_);
+	if (checkBox_) 
+	{
+		for (auto& [winName, video] : this->videoWindows_)
+			video->run();
+	}
+	if (ImGui::Button("Run video")) 
+	{
+		if (textBuffer_.ends_with(".mp4")) 
+		{
+			this->videoWindowCreate(textBuffer_.substr(0, textBuffer_.length()), textBuffer_);
+				textBuffer_.clear();
+		}
+		else if (isNumber(textBuffer_)) 
+		{
+			this->videoWindowCreate("cam" + textBuffer_, std::stoi(textBuffer_));
+				textBuffer_.clear();
+		}
 	}
 }
 

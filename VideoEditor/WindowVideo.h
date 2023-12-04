@@ -24,10 +24,10 @@ public:
 	WindowVideo(const std::string&, const int);
 	void run();
 private:	
-	std::thread thread_;
+	std::thread frameDisplayer_;
 	Video video_;
 	std::thread frameReader_;
-	ConcurrentQueue<cv::Mat> framesRead_;
+	ConcurrentQueue<cv::Mat> frameBuffer_;
 	void readFrames();
 	cv::Mat frame_;
 	bool isSourceCam_;

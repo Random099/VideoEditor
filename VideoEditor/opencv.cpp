@@ -15,9 +15,6 @@ int main(int argc, char* argv[])
     //editor.videoWindowCreate("First", 0);
     //editor.videoWindowCreate("This", "spice.mp4");
     //editor.controlPanelCreate("Control Panel");
-    for (;;) {
-        //cv::waitKey(30);
-    }
     //editor.videoWindowDestroy("First");
     //editor.videoWindowDestroy("Second");
     //editor.controlPanelDestroy(ControlPanel::defaultName);

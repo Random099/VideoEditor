@@ -11,6 +11,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "imgui_stdlib.h"
 #include <GL/gl3w.h>
 #include <GLFW/glfw3.h>
 //std
@@ -33,7 +34,10 @@ public:
 	void controlPanelCreate(const std::string&z);
 	void controlPanelDestroy(const std::string&);
 	std::shared_ptr<WindowVideo> operator[](const std::string&);
+	void handleVideos();
 private:
+	bool checkBox_{ false };
+	std::string textBuffer_;
 	std::map<std::string, std::shared_ptr<ControlPanel>> controlPanels_;
 	std::map<std::string, std::shared_ptr<WindowVideo>> videoWindows_;
 };

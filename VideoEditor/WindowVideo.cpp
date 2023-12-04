@@ -21,9 +21,8 @@ void WindowVideo::readFrames()
 	{
 		while (1)
 		{
-			this->framesRead_.push(this->video_.outFrameGet());
 			if (!this->video_.frameEmptyFlag())
-				this->framesRead_.push(this->video_.outFrameGet());
+				this->frameBuffer_.pushBack(this->video_.outFrameGet());
 			else
 				break;
 		}
@@ -31,7 +30,7 @@ void WindowVideo::readFrames()
 	else 
 	{
 		while (1) 
-			this->framesRead_.push(this->video_.outFrameGet());
+			this->frameBuffer_.pushBack(this->video_.outFrameGet());
 	}
 }
 
@@ -39,11 +38,11 @@ void WindowVideo::run()
 {
 	if (this->currentFrameId_ < this->videoFrameCount_)
 	{
-		this->framesRead_.wait_and_pop(this->frame_);
+		this->frameBuffer_.waitPopFront(this->frame_);
 		++this->currentFrameId_;
 	}
 	else if(this->isSourceCam_)
-		this->framesRead_.wait_and_pop(this->frame_);
+		this->frameBuffer_.waitPopFront(this->frame_);
 	else
 		this->video_.frameLastGet().copyTo(this->frame_);
 
