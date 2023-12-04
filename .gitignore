@@ -397,5 +397,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /VideoEditor/doanel.mp4
+/VideoEditor/wichu.mp4
+/VideoEditor/spice.mp4
+/VideoEditor/sample.mp4
 /VideoEditor/wichu.png
 /VideoEditor/imgui.ini
