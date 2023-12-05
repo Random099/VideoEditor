@@ -58,3 +58,8 @@ void WindowVideo::run()
 	ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(texture)), ImVec2(this->frame_.cols, this->frame_.rows));
 	ImGui::End();
 }
+
+std::string WindowVideo::videoNameGet() const
+{
+	return this->name_;
+}

@@ -23,6 +23,7 @@ public:
 	WindowVideo(const std::string&, const std::string&);
 	WindowVideo(const std::string&, const int);
 	void run();
+	std::string videoNameGet() const;
 private:	
 	std::thread frameDisplayer_;
 	Video video_;

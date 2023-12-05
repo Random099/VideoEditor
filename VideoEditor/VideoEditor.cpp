@@ -38,7 +38,26 @@ int VideoEditor::run() {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		ImGui::Begin("Editor");
+		ImGui::Begin("Editor", NULL, ImGuiWindowFlags_MenuBar);
+
+		if (ImGui::BeginMenuBar())
+		{
+			if (ImGui::BeginMenu("Parameters"))
+			{
+				for (auto& [name, video] : this->videoWindows_)
+				{
+					if (ImGui::MenuItem(name.c_str()))
+					{
+						this->currentWindow_ = this->videoWindows_[name];
+					}
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMenuBar();
+		}
+		if (!this->videoWindows_.empty() && currentWindow_ != nullptr)
+			ImGui::Text("Active window: %s", currentWindow_->videoNameGet().c_str());
+
 
 		handleVideos();
 
@@ -54,7 +73,8 @@ int VideoEditor::run() {
 	}
 }
 
-void VideoEditor::handleVideos() {
+void VideoEditor::handleVideos() 
+{
 	ImGui::Checkbox("Open Video", &checkBox_);
 	ImGui::SameLine();
 	ImGui::InputText("Text", &this->bufferVidName_);
@@ -78,7 +98,8 @@ void VideoEditor::handleVideos() {
 	}
 }
 
-void VideoEditor::handleParameters(Video& v) {
+void handleParameters(Video& v) 
+{
 	if (ImGui::BeginMenuBar()) 
 	{
 		if (ImGui::BeginMenu("Parameters"))

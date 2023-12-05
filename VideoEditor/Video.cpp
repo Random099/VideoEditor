@@ -1,10 +1,11 @@
 #include "Video.h"
 
-Video::Video(int device) //todo: frame read multithreading
+Video::Video(int device) 
 {
 	try 
 	{
-		if (this->capSrc_.open(device))
+		this->capSrc_.open(device);
+		if(!this->capSrc_.isOpened())
 			throw VideoInitException();
 		this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
 		this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
@@ -23,7 +24,8 @@ Video::Video(const std::string& srcName)
 {
 	try
 	{
-		if (this->capSrc_.open(srcName))
+		this->capSrc_.open(srcName);
+		if(!this->capSrc_.isOpened())
 			throw VideoInitException();
 		this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
 		this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);

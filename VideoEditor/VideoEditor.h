@@ -38,8 +38,10 @@ public:
 	void handleVideos();
 	void handleParameters(Video&);
 private:
-	bool checkBox_{ false };
-	std::string bufferVidName_;
 	std::map<std::string, std::shared_ptr<ControlPanel>> controlPanels_;
 	std::map<std::string, std::shared_ptr<WindowVideo>> videoWindows_;
+	std::string bufferVidName_;
+	bool checkBox_{ false };
+	std::shared_ptr<WindowVideo> currentWindow_{ nullptr };
+
 };
