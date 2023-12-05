@@ -28,14 +28,14 @@ public:
 	bool frameEmptyFlag();
 	cv::Mat	frameLastGet();
 private:
+	std::map<PType, std::shared_ptr<Parameter>> parameters_;
+	cv::VideoCapture capSrc_;
 	cv::Mat frameIn_;
 	cv::Mat frameOut_;
 	cv::Mat frameLast_;
-	int frameCount_;
-	cv::VideoCapture capSrc_;
-	double FPS_;
-	std::map<PType, std::shared_ptr<Parameter>> parameters_;
-	bool frameEmptyFlag_;
+	double FPS_{};
+	int frameCount_{};
+	bool frameEmptyFlag_{};
 };
 
 class VideoInitException : public std::runtime_error {

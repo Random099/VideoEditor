@@ -55,10 +55,9 @@ int VideoEditor::run() {
 }
 
 void VideoEditor::handleVideos() {
-	//bool checkBox { false };
-	//std::string textBuffer;
 	ImGui::Checkbox("Open Video", &checkBox_);
-	ImGui::InputText("Text", &textBuffer_);
+	ImGui::SameLine();
+	ImGui::InputText("Text", &this->bufferVidName_);
 	if (checkBox_) 
 	{
 		for (auto& [winName, video] : this->videoWindows_)
@@ -66,15 +65,28 @@ void VideoEditor::handleVideos() {
 	}
 	if (ImGui::Button("Run video")) 
 	{
-		if (textBuffer_.ends_with(".mp4")) 
+		if (this->bufferVidName_.ends_with(".mp4") && std::filesystem::exists(this->bufferVidName_))
 		{
-			this->videoWindowCreate(textBuffer_.substr(0, textBuffer_.length()), textBuffer_);
-				textBuffer_.clear();
+			this->videoWindowCreate(this->bufferVidName_.substr(0, this->bufferVidName_.length()), this->bufferVidName_);
+			this->bufferVidName_.clear();
 		}
-		else if (isNumber(textBuffer_)) 
+		else if (isNumber(this->bufferVidName_)) 
 		{
-			this->videoWindowCreate("cam" + textBuffer_, std::stoi(textBuffer_));
-				textBuffer_.clear();
+			this->videoWindowCreate("cam" + this->bufferVidName_, std::stoi(this->bufferVidName_));
+			this->bufferVidName_.clear();
+		}
+	}
+}
+
+void VideoEditor::handleParameters(Video& v) {
+	if (ImGui::BeginMenuBar()) 
+	{
+		if (ImGui::BeginMenu("Parameters"))
+		{
+			if (ImGui::MenuItem("Blur"))
+			{
+
+			}
 		}
 	}
 }

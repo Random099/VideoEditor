@@ -19,6 +19,7 @@
 #include <memory>
 #include <utility>
 #include <map>
+#include <filesystem>
 
 class VideoEditor
 {
@@ -31,13 +32,14 @@ public:
 	void videoWindowCreate(const std::string&, int);
 	void videoWindowCreate(const std::string&, const std::string&);
 	void videoWindowDestroy(const std::string&);
-	void controlPanelCreate(const std::string&z);
+	void controlPanelCreate(const std::string&);
 	void controlPanelDestroy(const std::string&);
 	std::shared_ptr<WindowVideo> operator[](const std::string&);
 	void handleVideos();
+	void handleParameters(Video&);
 private:
 	bool checkBox_{ false };
-	std::string textBuffer_;
+	std::string bufferVidName_;
 	std::map<std::string, std::shared_ptr<ControlPanel>> controlPanels_;
 	std::map<std::string, std::shared_ptr<WindowVideo>> videoWindows_;
 };

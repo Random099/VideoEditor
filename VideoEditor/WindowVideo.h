@@ -34,4 +34,5 @@ private:
 	const std::string name_;
 	int currentFrameId_ = 0;
 	int videoFrameCount_;
+	float testFloat_ = 0.0f;
 };

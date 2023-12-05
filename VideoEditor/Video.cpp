@@ -2,22 +2,41 @@
 
 Video::Video(int device) //todo: frame read multithreading
 {
-	this->capSrc_.open(device);
-	if (!this->capSrc_.isOpened()) 
-		throw VideoInitException();
-	this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
-	this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
-	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+	try 
+	{
+		if (this->capSrc_.open(device))
+			throw VideoInitException();
+		this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
+		this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
+		this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+	}
+	catch (cv::Exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+	catch (...)
+	{
+		std::cout << "Unknown exception" << '\n';
+	}
 }
-
 Video::Video(const std::string& srcName)
 {
-	this->capSrc_.open(srcName);
-	if (!this->capSrc_.isOpened())
-		throw VideoInitException();
-	this->FPS_ = capSrc_.get(cv::CAP_PROP_FPS);
-	this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
-	this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+	try
+	{
+		if (this->capSrc_.open(srcName))
+			throw VideoInitException();
+		this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
+		this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
+		this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+	}
+	catch (cv::Exception& e) 
+	{
+		std::cout << e.what() << '\n';
+	}
+	catch (...)
+	{
+		std::cout << "Unknown exception" << '\n';
+	}
 }
 
 Video::~Video()
