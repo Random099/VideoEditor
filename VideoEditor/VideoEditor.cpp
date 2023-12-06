@@ -40,8 +40,8 @@ int VideoEditor::run() {
 
 		ImGui::Begin("Editor", NULL, ImGuiWindowFlags_MenuBar);
 
-		handleVideos();
-		handleParameters();
+		videosHandle();
+		parametersHandle();
 
 		ImGui::End();
 
@@ -55,7 +55,7 @@ int VideoEditor::run() {
 	}
 }
 
-void VideoEditor::handleVideos() 
+void VideoEditor::videosHandle() 
 {
 	if (ImGui::BeginMenuBar())
 	{
@@ -98,7 +98,7 @@ void VideoEditor::handleVideos()
 	}
 }
 
-void VideoEditor::handleParameters() 
+void VideoEditor::parametersHandle() 
 {
 	if (ImGui::BeginMenuBar()) 
 	{

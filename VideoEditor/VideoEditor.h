@@ -34,8 +34,8 @@ public:
 	void controlPanelCreate(const std::string&);
 	void controlPanelDestroy(const std::string&);
 	std::shared_ptr<WindowVideo> operator[](const std::string&);
-	void handleVideos();
-	void handleParameters();
+	void videosHandle();
+	void parametersHandle();
 	void parameterListCreate();
 private:
 	std::map<std::string, std::shared_ptr<ControlPanel>> controlPanels_;
