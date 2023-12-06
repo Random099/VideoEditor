@@ -124,9 +124,10 @@ void VideoEditor::parameterListCreate()
 			ImGui::Bullet();
 			ImGui::SameLine();
 		}
-		if (ImGui::MenuItem(name.c_str()))
+		if (ImGui::MenuItem(name.c_str())) //TODO: implement name to parameter initialization dependency
 		{
-			this->currentWindow_->videoParameterCreate(std::shared_ptr<Parameter>(new Parameter{ type, cv::Size(11, 11) }));
+			if(this->currentWindow_ != nullptr)
+				this->currentWindow_->videoParameterCreate(std::shared_ptr<Parameter>(new Parameter{ type, cv::Size(11, 11) }));
 		}
 	}
 	ImGui::EndMenu();
