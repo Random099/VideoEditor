@@ -9,7 +9,7 @@ Video::Video(int device)
 			throw VideoInitException();
 		this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
 		this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
-		this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+		this->parameterAdd(std::shared_ptr<Parameter>(new Parameter{ }));
 	}
 	catch (cv::Exception& e)
 	{
@@ -29,7 +29,7 @@ Video::Video(const std::string& srcName)
 			throw VideoInitException();
 		this->FPS_ = this->capSrc_.get(cv::CAP_PROP_FPS);
 		this->frameCount_ = this->capSrc_.get(cv::CAP_PROP_FRAME_COUNT);
-		this->parameterCreate(std::shared_ptr<Parameter>(new Parameter{ }));
+		this->parameterAdd(std::shared_ptr<Parameter>(new Parameter{ }));
 	}
 	catch (cv::Exception& e) 
 	{
@@ -49,7 +49,8 @@ Video::~Video()
 bool Video::frameRead()
 {
 	this->capSrc_ >> this->frameIn_;
-	if (this->frameIn_.empty()) {
+	if (this->frameIn_.empty())
+	{
 		this->frameEmptyFlag_ = true;
 		this->frameOut_.copyTo(this->frameLast_);
 		return false;
@@ -71,9 +72,12 @@ double Video::fpsGet() const
 
 void Video::filterApply() 
 {
-	if (this->frameRead()) {
-		for (auto const& [type, param] : this->parameters_) {
-			switch (type) {
+	if (this->frameRead()) 
+	{
+		for (auto const& [type, param] : this->parameters_) 
+		{
+			switch (type) 
+			{
 			case Param::Type::none:
 				this->frameIn_.copyTo(this->frameOut_);
 				break;
