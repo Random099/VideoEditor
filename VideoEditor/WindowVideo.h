@@ -24,6 +24,8 @@ public:
 	WindowVideo(const std::string&, const int);
 	void run();
 	std::string videoNameGet() const;
+	std::shared_ptr<Video> videoGet();
+	void videoParameterCreate(std::shared_ptr<Parameter>);
 private:	
 	std::thread frameDisplayer_;
 	Video video_;

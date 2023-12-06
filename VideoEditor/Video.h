@@ -23,12 +23,13 @@ public:
 	cv::Mat outFrameGet();
 	double fpsGet() const;
 	void filterApply();
-	void parameterCreate(std::shared_ptr<Parameter>);
+	void parameterAdd(std::shared_ptr<Parameter>);
 	int frameCountGet() const;
 	bool frameEmptyFlag();
 	cv::Mat	frameLastGet();
+	std::shared_ptr<std::map<Param::Type, std::shared_ptr<Parameter>>> parametersGet();
 private:
-	std::map<PType, std::shared_ptr<Parameter>> parameters_;
+	std::map<Param::Type, std::shared_ptr<Parameter>> parameters_;
 	cv::VideoCapture capSrc_;
 	cv::Mat frameIn_;
 	cv::Mat frameOut_;

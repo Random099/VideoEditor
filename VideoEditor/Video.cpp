@@ -74,10 +74,10 @@ void Video::filterApply()
 	if (this->frameRead()) {
 		for (auto const& [type, param] : this->parameters_) {
 			switch (type) {
-			case PType::none:
+			case Param::Type::none:
 				this->frameIn_.copyTo(this->frameOut_);
 				break;
-			case PType::blur:
+			case Param::Type::blur:
 				cv::blur(this->frameIn_, this->frameOut_, param->sizeGet());
 				break;
 			default:
@@ -88,9 +88,9 @@ void Video::filterApply()
 	}
 }
 
-void Video::parameterCreate(std::shared_ptr<Parameter> param)
+void Video::parameterAdd(std::shared_ptr<Parameter> param)
 {
-	std::map<PType, std::shared_ptr<Parameter>>::size_type none = this->parameters_.erase(PType::none);
+	std::map<Param::Type, std::shared_ptr<Parameter>>::size_type none = this->parameters_.erase(Param::Type::none);
 	this->parameters_.try_emplace(param->typeGet(), param);
 }
 
@@ -107,4 +107,9 @@ bool Video::frameEmptyFlag()
 cv::Mat Video::frameLastGet()
 {
 	return this->frameLast_;
+}
+
+std::shared_ptr<std::map<Param::Type, std::shared_ptr<Parameter>>> Video::parametersGet() 
+{
+	return std::make_shared<std::map<Param::Type, std::shared_ptr<Parameter>>>(this->parameters_);
 }

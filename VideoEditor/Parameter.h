@@ -3,24 +3,33 @@
 #include <opencv2/core.hpp>
 //std
 #include <string>
+#include <map>
 
-enum class PType {
-	none = 0,
-	blur = 1
-};
+
+
+namespace Param {
+	enum class Type {
+		none = 0,
+		blur = 1
+	};
+	const std::map<std::string, Type> map = {
+		{"none", Type::none},
+		{"blur", Type::blur}
+	};
+}
 
 class Parameter
 {
 public:
 	Parameter();
-	Parameter(PType, cv::Size);
+	Parameter(Param::Type, cv::Size);
 	~Parameter();
-	PType typeGet() const;
+	Param::Type typeGet() const;
 	cv::Size sizeGet() const;
 	void sizeIncrease(int);
 	void sizeDecrease(int);
 private:
-	PType type_;
+	Param::Type type_;
 	cv::Size size_;
 };
 

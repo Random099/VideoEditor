@@ -40,26 +40,8 @@ int VideoEditor::run() {
 
 		ImGui::Begin("Editor", NULL, ImGuiWindowFlags_MenuBar);
 
-		if (ImGui::BeginMenuBar())
-		{
-			if (ImGui::BeginMenu("Parameters"))
-			{
-				for (auto& [name, video] : this->videoWindows_)
-				{
-					if (ImGui::MenuItem(name.c_str()))
-					{
-						this->currentWindow_ = this->videoWindows_[name];
-					}
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMenuBar();
-		}
-		if (!this->videoWindows_.empty() && currentWindow_ != nullptr)
-			ImGui::Text("Active window: %s", currentWindow_->videoNameGet().c_str());
-
-
 		handleVideos();
+		handleParameters();
 
 		ImGui::End();
 
@@ -75,10 +57,28 @@ int VideoEditor::run() {
 
 void VideoEditor::handleVideos() 
 {
-	ImGui::Checkbox("Open Video", &checkBox_);
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("Sources"))
+		{
+			for (auto& [name, video] : this->videoWindows_)
+			{
+				if (ImGui::MenuItem(name.c_str()))
+				{
+					this->currentWindow_ = this->videoWindows_[name];
+				}
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+	if (currentWindow_ != nullptr)
+		ImGui::Text("Targetting: %s", currentWindow_->videoNameGet().c_str());
+
+	ImGui::Checkbox("Open Video", &this->checkBox_);
 	ImGui::SameLine();
 	ImGui::InputText("Text", &this->bufferVidName_);
-	if (checkBox_) 
+	if (this->checkBox_) 
 	{
 		for (auto& [winName, video] : this->videoWindows_)
 			video->run();
@@ -98,18 +98,32 @@ void VideoEditor::handleVideos()
 	}
 }
 
-void handleParameters(Video& v) 
+void VideoEditor::handleParameters() 
 {
 	if (ImGui::BeginMenuBar()) 
 	{
 		if (ImGui::BeginMenu("Parameters"))
 		{
-			if (ImGui::MenuItem("Blur"))
-			{
+			parameterListCreate();
+		}
+		ImGui::EndMenuBar();
+	}
+}
 
-			}
+void VideoEditor::parameterListCreate() 
+{
+	for (auto& [name, type] : Param::map) {
+		if (this->currentWindow_ != nullptr && this->currentWindow_->videoGet()->parametersGet()->contains(type))
+		{
+			ImGui::Bullet();
+			ImGui::SameLine();
+		}
+		if (ImGui::MenuItem(name.c_str()))
+		{
+			this->currentWindow_->videoParameterCreate(std::shared_ptr<Parameter>(new Parameter{ type, cv::Size(11, 11) }));
 		}
 	}
+	ImGui::EndMenu();
 }
 
 std::shared_ptr<WindowVideo> VideoEditor::getWindow(const std::string& name)

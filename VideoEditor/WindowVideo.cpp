@@ -63,3 +63,13 @@ std::string WindowVideo::videoNameGet() const
 {
 	return this->name_;
 }
+
+std::shared_ptr<Video> WindowVideo::videoGet() 
+{
+	return std::make_shared<Video>(this->video_);
+}
+
+void WindowVideo::videoParameterCreate(std::shared_ptr<Parameter> param)
+{
+	this->video_.parameterAdd(param);
+}

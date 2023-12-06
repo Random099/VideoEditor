@@ -1,14 +1,14 @@
 #include "Parameter.h"
 
-Parameter::Parameter() : type_(PType::none) {}
+Parameter::Parameter() : type_(Param::Type::none) {}
 
-Parameter::Parameter(PType type, cv::Size size) : type_{ type }, size_{ size } {}
+Parameter::Parameter(Param::Type type, cv::Size size) : type_{ type }, size_{ size } {}
 
 Parameter::~Parameter()
 {
 }
 
-PType Parameter::typeGet() const
+Param::Type Parameter::typeGet() const
 {
 	return this->type_;
 }

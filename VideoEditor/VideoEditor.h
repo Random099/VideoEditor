@@ -1,6 +1,5 @@
 #pragma once
 //project
-#include "Video.h"
 #include "ControlPanel.h"
 #include "WindowVideo.h"
 //opencv
@@ -36,7 +35,8 @@ public:
 	void controlPanelDestroy(const std::string&);
 	std::shared_ptr<WindowVideo> operator[](const std::string&);
 	void handleVideos();
-	void handleParameters(Video&);
+	void handleParameters();
+	void parameterListCreate();
 private:
 	std::map<std::string, std::shared_ptr<ControlPanel>> controlPanels_;
 	std::map<std::string, std::shared_ptr<WindowVideo>> videoWindows_;

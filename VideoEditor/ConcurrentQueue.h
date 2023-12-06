@@ -8,7 +8,7 @@ template <typename T>
 class ConcurrentQueue
 {
 public:
-    explicit ConcurrentQueue();
+    ConcurrentQueue();
     void pushBack(T const& data);
     bool empty() const;
     bool tryPopFront(T& valPopped);
