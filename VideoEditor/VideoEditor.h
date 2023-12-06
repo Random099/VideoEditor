@@ -37,6 +37,7 @@ public:
 	void videosHandle();
 	void parametersHandle();
 	void parameterListCreate();
+	void videoListCreate();
 private:
 	std::map<std::string, std::shared_ptr<ControlPanel>> controlPanels_;
 	std::map<std::string, std::shared_ptr<WindowVideo>> videoWindows_;

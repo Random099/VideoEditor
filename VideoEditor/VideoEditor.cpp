@@ -59,16 +59,9 @@ void VideoEditor::videosHandle()
 {
 	if (ImGui::BeginMenuBar())
 	{
-		if (ImGui::BeginMenu("Sources"))
+		if (ImGui::BeginMenu("Sources")) //Window targetting menu
 		{
-			for (auto& [name, video] : this->videoWindows_)
-			{
-				if (ImGui::MenuItem(name.c_str()))
-				{
-					this->currentWindow_ = this->videoWindows_[name];
-				}
-			}
-			ImGui::EndMenu();
+			videoListCreate();
 		}
 		ImGui::EndMenuBar();
 	}
@@ -128,6 +121,18 @@ void VideoEditor::parameterListCreate()
 		{
 			if(this->currentWindow_ != nullptr)
 				this->currentWindow_->videoParameterCreate(std::shared_ptr<Parameter>(new Parameter{ type, cv::Size(11, 11) }));
+		}
+	}
+	ImGui::EndMenu();
+}
+
+void VideoEditor::videoListCreate()
+{
+	for (auto& [name, video] : this->videoWindows_)
+	{
+		if (ImGui::MenuItem(name.c_str()))
+		{
+			this->currentWindow_ = this->videoWindows_[name];
 		}
 	}
 	ImGui::EndMenu();
