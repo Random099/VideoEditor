@@ -85,16 +85,22 @@ void VideoEditor::videosHandle()
 	}
 	if (ImGui::Button("Run video")) 
 	{
-		if (this->bufferVidName_.ends_with(".mp4") && std::filesystem::exists(this->bufferVidName_))
+		if (this->bufferVidName_.ends_with(".mp4") && std::filesystem::exists(this->bufferVidName_)) //mp4
 		{
 			this->videoWindowCreate(this->bufferVidName_.substr(0, this->bufferVidName_.length()), this->bufferVidName_);
 			this->bufferVidName_.clear();
 		}
-		else if (isNumber(this->bufferVidName_)) 
+		else if (isNumber(this->bufferVidName_)) //cam
 		{
 			this->videoWindowCreate("cam" + this->bufferVidName_, std::stoi(this->bufferVidName_));
 			this->bufferVidName_.clear();
 		}
+		else if (this->bufferVidName_.starts_with("http") || this->bufferVidName_.starts_with("rtsp")) //ip cam
+		{
+			this->videoWindowCreate("cam" + this->bufferVidName_, this->bufferVidName_);
+			this->bufferVidName_.clear();
+		}
+
 	}
 }
 
